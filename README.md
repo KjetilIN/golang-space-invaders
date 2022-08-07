@@ -1,3 +1,3 @@
 # Space Invaders 
 
-Created using Golang and Ebiten
+Created using Golang and Ebitengine
