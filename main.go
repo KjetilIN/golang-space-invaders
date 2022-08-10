@@ -16,6 +16,7 @@ const (
 	scaleFactor = 0.5 //Scale the images to this factor
 
 	//SHIP
+	shipWidth = 45
 	shipLevelY = height*8/9 
 	speed = 9
 )
@@ -39,13 +40,17 @@ func (g *Game) Update() error {
 		keyPressed := keys[0]
 
 		//Left
-		if(keyPressed == ebiten.KeyA){
-			Ship.x -= speed
+		if(keyPressed == ebiten.KeyA || keyPressed == ebiten.KeyLeft){
+			if (Ship.x - speed >= 0){
+				Ship.x -= speed
+			}
 		}
 
 		//Right
-		if(keyPressed == ebiten.KeyD){
-			Ship.x += speed
+		if(keyPressed == ebiten.KeyD || keyPressed == ebiten.KeyRight){
+			if(Ship.x + speed + shipWidth <= width){
+				Ship.x += speed
+			}
 		}
 
 	}
