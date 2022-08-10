@@ -36,18 +36,14 @@ func (g *Game) Update() error {
     // Write your game's logical update.
 
 	fmt.Printf("Ship current x: %v\n",Ship.x)
-
+	
+	//temp moving loop
 	if(Ship.x > width ){
-		fmt.Println("RESET POS")
 		Ship.x = 0
-		fmt.Printf("NEW POS X:%v Y:%v\n",Ship.x,Ship.y)
 	}else{
 		Ship.x += speed
 	}
 	
-	
-
-	fmt.Println(Ship.x)
     return nil
 }
 

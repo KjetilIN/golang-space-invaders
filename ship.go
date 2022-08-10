@@ -7,7 +7,6 @@ import (
 type ship struct{
 	x float64
 	y float64
-	
 }
 
 //Creates and returnes a new ship struct
@@ -21,7 +20,3 @@ func NewShip(x float64, y float64) *ship {
 	return &ship
 
 }
-
-func (s *ship) updateX(newX float64){
-	s.x = newX 
-} 
