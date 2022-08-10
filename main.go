@@ -12,19 +12,26 @@ import (
 )
 
 const (
-	shipLevelY = 430
+	height = 600
+	width = 600
+
+	//SHIP
+	shipLevelY = height*8/9 
+	speed = 10
 )
 
 
 var(
+	//Ship
 	shipImg *ebiten.Image
 	shipX int 
-	shipY int 
 )
 
 func init (){
+
+	//Load the image 
 	var err error
-	shipImg,_, err = ebitenutil.NewImageFromFile("ship.jpg")
+	shipImg,_, err = ebitenutil.NewImageFromFile("assets/figures/ship.jpg")
 	if err != nil {
 		fmt.Println("Error loading the ship")
 	}
@@ -38,28 +45,37 @@ type Game struct{}
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
     // Write your game's logical update.
+	if(shipX + 52 > width ){
+		shipX = 0
+	}
+	shipX += speed
     return nil
 }
 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	op := &ebiten.DrawImageOptions{}
+	shipOp := &ebiten.DrawImageOptions{}
+
+	//Resize the ship
+	shipOp.GeoM.Scale(0.5, 0.5)
+	shipOp.GeoM.Translate(float64(shipX), shipLevelY)
 
     // Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
-	screen.DrawImage(shipImg,op)
+	
+	screen.DrawImage(shipImg,shipOp)
 }
 
 //Size of screen
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-    return 320, 240
+    return width, height
 }
 
-func main() {
+func main(){
     game := &Game{}
     // Specify the window size as you like. Here, a doubled size is specified.
-    ebiten.SetWindowSize(640, 480)
+    ebiten.SetWindowSize(width, height)
     ebiten.SetWindowTitle("Space Invaders 2022 - TekKom")
     // Call ebiten.RunGame to start your game loop.
     if err := ebiten.RunGame(game); err != nil {
