@@ -9,34 +9,23 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+
 )
 
 const (
 	height = 600
 	width = 600
+	scaleFactor = 0.5 //Scale the images to this factor
 
 	//SHIP
 	shipLevelY = height*8/9 
 	speed = 10
 )
 
+var Ship ship = *NewShip(0,0)
+var shipImg *ebiten.Image
 
-var(
-	//Ship
-	shipImg *ebiten.Image
-	shipX int 
-)
 
-func init (){
-
-	//Load the image 
-	var err error
-	shipImg,_, err = ebitenutil.NewImageFromFile("assets/figures/ship.jpg")
-	if err != nil {
-		fmt.Println("Error loading the ship")
-	}
-
-}
 
 //Implement ebiten game engine
 type Game struct{}
@@ -45,26 +34,40 @@ type Game struct{}
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
     // Write your game's logical update.
-	if(shipX + 52 > width ){
-		shipX = 0
+
+	fmt.Printf("Ship current x: %v\n",Ship.x)
+
+	if(Ship.x > width ){
+		fmt.Println("RESET POS")
+		Ship.x = 0
+		fmt.Printf("NEW POS X:%v Y:%v\n",Ship.x,Ship.y)
+	}else{
+		Ship.x += speed
 	}
-	shipX += speed
+	
+	
+
+	fmt.Println(Ship.x)
     return nil
 }
 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	shipOp := &ebiten.DrawImageOptions{}
+	op := &ebiten.DrawImageOptions{}
 
-	//Resize the ship
-	shipOp.GeoM.Scale(0.5, 0.5)
-	shipOp.GeoM.Translate(float64(shipX), shipLevelY)
+	//Load the image
+	var err error 
+	shipImg,_, err = ebitenutil.NewImageFromFile("assets/figures/ship.jpg")
+	if err != nil {
+		fmt.Println("ERROR NO SHIP")
+	}
 
-    // Write your game's rendering.
+	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
-	
-	screen.DrawImage(shipImg,shipOp)
+	op.GeoM.Translate(Ship.x, shipLevelY)
+	screen.DrawImage(shipImg,op)
+
 }
 
 //Size of screen
