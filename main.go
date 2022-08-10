@@ -1,11 +1,35 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"log"
 
+	_ "image/jpeg"
+
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
+
+const (
+	shipLevelY = 430
+)
+
+
+var(
+	shipImg *ebiten.Image
+	shipX int 
+	shipY int 
+)
+
+func init (){
+	var err error
+	shipImg,_, err = ebitenutil.NewImageFromFile("ship.jpg")
+	if err != nil {
+		fmt.Println("Error loading the ship")
+	}
+
+}
 
 //Implement ebiten game engine
 type Game struct{}
@@ -19,8 +43,12 @@ func (g *Game) Update() error {
 
 
 func (g *Game) Draw(screen *ebiten.Image) {
+
+	op := &ebiten.DrawImageOptions{}
+
     // Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
+	screen.DrawImage(shipImg,op)
 }
 
 //Size of screen
