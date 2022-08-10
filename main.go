@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"image/color"
 	"log"
-
 	_ "image/jpeg"
-
+	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-
 )
 
 const (
@@ -19,7 +17,7 @@ const (
 
 	//SHIP
 	shipLevelY = height*8/9 
-	speed = 10
+	speed = 9
 )
 
 var Ship ship = *NewShip(0,0)
@@ -35,15 +33,23 @@ type Game struct{}
 func (g *Game) Update() error {
     // Write your game's logical update.
 
-	fmt.Printf("Ship current x: %v\n",Ship.x)
+	keys := controlls.GetKeyPressed()
 	
-	//temp moving loop
-	if(Ship.x > width ){
-		Ship.x = 0
-	}else{
-		Ship.x += speed
+	if(len(keys) != 0){
+		keyPressed := keys[0]
+
+		//Left
+		if(keyPressed == ebiten.KeyA){
+			Ship.x -= speed
+		}
+
+		//Right
+		if(keyPressed == ebiten.KeyD){
+			Ship.x += speed
+		}
+
 	}
-	
+
     return nil
 }
 
