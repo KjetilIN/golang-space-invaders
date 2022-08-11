@@ -21,8 +21,14 @@ const (
 	speed = 9
 )
 
-var Ship ship = *NewShip(0,0)
-var shipImg *ebiten.Image
+var (
+	Ship ship = *NewShip(0,0)
+	shipImg *ebiten.Image
+
+)
+
+//var Ship ship = *NewShip(0,0)
+//var shipImg *ebiten.Image
 
 
 
@@ -42,6 +48,11 @@ func loadImage (path string) *ebiten.Image{
 		return nil
 	}
 	return img
+}
+
+//Load all the images 
+func init(){
+	shipImg = loadImage("assets/figures/ship.jpg")
 }
 
 // Update proceeds the game state.
@@ -77,7 +88,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
-	shipImg = loadImage("assets/figures/ship.jpg")
+	
 
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
