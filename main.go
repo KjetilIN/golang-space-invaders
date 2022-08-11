@@ -6,6 +6,7 @@ import (
 	"log"
 	_ "image/jpeg"
 	"github.com/KjetilIN/golang-space-invaders/controlls"
+	"github.com/KjetilIN/golang-space-invaders/bullet"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
@@ -21,9 +22,13 @@ const (
 	speed = 9
 )
 
+
 var (
 	Ship ship = *NewShip(0,0)
 	shipImg *ebiten.Image
+	blt *ebiten.Image
+
+	plBullets []bullet.PlayerBullet = bullet.NewBulletList()
 
 )
 
@@ -53,6 +58,7 @@ func loadImage (path string) *ebiten.Image{
 //Load all the images 
 func init(){
 	shipImg = loadImage("assets/figures/ship.jpg")
+	blt = loadImage("assets/figures/beem_left.jpg")
 }
 
 // Update proceeds the game state.
@@ -60,7 +66,12 @@ func init(){
 func (g *Game) Update() error {
     // Write your game's logical update.
 
+	for _,bullet := range plBullets{
+		bullet.Update()
+	}
+
 	keys := controlls.GetKeyPressed()
+	
 	
 	if(len(keys) != 0){
 		keyPressed := keys[0]
@@ -79,7 +90,18 @@ func (g *Game) Update() error {
 			}
 		}
 
+		if (keyPressed == ebiten.KeySpace){
+			var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
+			plBullets = append(plBullets, *newBlt)
+
+			fmt.Println(len(plBullets))
+			
+			
+		}
+
 	}
+
+	
 
     return nil
 }
@@ -89,11 +111,22 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
 	
+	
 
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
 	op.GeoM.Translate(Ship.x, shipLevelY)
 	screen.DrawImage(shipImg,op)
+
+
+	//For each bullet
+
+	for _,bullet := range plBullets{
+		sc := &ebiten.DrawImageOptions{}
+		sc.GeoM.Translate(bullet.X,bullet.Y)
+		screen.DrawImage(blt,sc)
+	}
+	
 
 }
 

@@ -1,21 +1,26 @@
 package bullet
 
 type PlayerBullet struct {
-	x int
-	y int
-	speedY int
+	X float64
+	Y float64
+	SpeedY float64
 }
 
-func (b *PlayerBullet) update() {
-	b.y += b.speedY
+func (b *PlayerBullet) Update() {
+	b.Y -= b.SpeedY
 }
 
-func NewPlayerBullet(x int, y int, speedy int) *PlayerBullet{
+func NewPlayerBullet(x float64, y float64, speedy float64) *PlayerBullet{
 	var playerBullet = PlayerBullet{
-		x: x,
-		y: y,
-		speedY: speedy,
+		X: x,
+		Y: y,
+		SpeedY: speedy,
 	}
 
 	return &playerBullet
+}
+
+//Makes an empty list of bullets 
+func NewBulletList() []PlayerBullet{
+	return make([]PlayerBullet,0)
 }
