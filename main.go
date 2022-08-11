@@ -101,8 +101,6 @@ func (g *Game) Update() error {
 
 	}
 
-	
-
     return nil
 }
 
@@ -110,8 +108,6 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
-	
-	
 
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})

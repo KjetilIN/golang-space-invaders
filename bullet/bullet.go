@@ -6,10 +6,12 @@ type PlayerBullet struct {
 	SpeedY float64
 }
 
+//Update the bullet postition - Moves the bullet up
 func (b *PlayerBullet) Update() {
 	b.Y -= b.SpeedY
 }
 
+//Create a new player bullet
 func NewPlayerBullet(x float64, y float64, speedy float64) *PlayerBullet{
 	var playerBullet = PlayerBullet{
 		X: x,
