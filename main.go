@@ -27,7 +27,22 @@ var shipImg *ebiten.Image
 
 
 //Implement ebiten game engine
-type Game struct{}
+type Game struct{
+
+
+}
+
+//Method that loads an image 
+func loadImage (path string) *ebiten.Image{
+	var err error 
+	var img *ebiten.Image
+	img,_, err = ebitenutil.NewImageFromFile(path)
+	if err != nil {
+		fmt.Printf("ERROR DID NOT LOAD: %v\n",path)
+		return nil
+	}
+	return img
+}
 
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
@@ -62,13 +77,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
-
-	//Load the image
-	var err error 
-	shipImg,_, err = ebitenutil.NewImageFromFile("assets/figures/ship.jpg")
-	if err != nil {
-		fmt.Println("ERROR NO SHIP")
-	}
+	shipImg = loadImage("assets/figures/ship.jpg")
 
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
