@@ -58,7 +58,7 @@ func loadImage (path string) *ebiten.Image{
 //Load all the images 
 func init(){
 	shipImg = loadImage("assets/figures/ship.jpg")
-	blt = loadImage("assets/figures/beem_left.jpg")
+	blt = loadImage("assets/figures/bullet.jpg")
 }
 
 // Update proceeds the game state.
@@ -91,12 +91,12 @@ func (g *Game) Update() error {
 		}
 
 		if (keyPressed == ebiten.KeySpace){
-			var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
-			plBullets = append(plBullets, *newBlt)
-
-			fmt.Println(len(plBullets))
-			
-			
+			if (len(plBullets)<5){
+				var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
+				plBullets = append(plBullets, *newBlt)
+			}else{
+				plBullets = bullet.NewBulletList()
+			}
 		}
 
 	}
