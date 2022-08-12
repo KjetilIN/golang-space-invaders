@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/color"
 	"log"
+	"sync"
 	_ "image/jpeg"
 	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/KjetilIN/golang-space-invaders/bullet"
@@ -25,8 +26,7 @@ const (
 
 var (
 	Ship ship = *NewShip(0,0)
-	shipImg *ebiten.Image
-	blt *ebiten.Image
+	
 
 	plBullets []bullet.PlayerBullet = bullet.NewBulletList()
 
@@ -40,6 +40,10 @@ var (
 //Implement ebiten game engine
 type Game struct{
 
+	shipImg *ebiten.Image
+	blt *ebiten.Image
+
+	once sync.Once
 
 }
 
@@ -55,16 +59,17 @@ func loadImage (path string) *ebiten.Image{
 	return img
 }
 
-//Load all the images 
-func init(){
-	shipImg = loadImage("assets/figures/ship.jpg")
-	blt = loadImage("assets/figures/bullet.jpg")
-}
-
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
     // Write your game's logical update.
+
+	//Load all images once 
+	g.once.Do(func() {
+		g.shipImg = loadImage("assets/figures/ship.jpg")
+		g.blt = loadImage("assets/figures/bullet.jpg")
+
+	})
 
 	for _,bullet := range plBullets{
 		bullet.Update()
@@ -112,7 +117,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
 	op.GeoM.Translate(Ship.x, shipLevelY)
-	screen.DrawImage(shipImg,op)
+	screen.DrawImage(g.shipImg,op)
 
 
 	//For each bullet
@@ -120,7 +125,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _,bullet := range plBullets{
 		sc := &ebiten.DrawImageOptions{}
 		sc.GeoM.Translate(bullet.X,bullet.Y)
-		screen.DrawImage(blt,sc)
+		screen.DrawImage(g.blt,sc)
 	}
 	
 
