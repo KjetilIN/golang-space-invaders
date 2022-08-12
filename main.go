@@ -15,7 +15,7 @@ import (
 const (
 	height = 600
 	width = 600
-	scaleFactor = 0.5 //Scale the images to this factor
+	scaleFactor = 1 //Scale the images to this factor
 
 	//SHIP
 	shipWidth = 45
@@ -25,9 +25,7 @@ const (
 
 
 var (
-	Ship ship = *NewShip(0,0)
-	
-
+	Ship ship = *NewShip(0,shipLevelY)
 	plBullets []bullet.PlayerBullet = bullet.NewBulletList()
 
 )
@@ -59,6 +57,17 @@ func loadImage (path string) *ebiten.Image{
 	return img
 }
 
+//Function for drawing asset 
+func DrawAsset(givenX int, givenY int, img *ebiten.Image, op *ebiten.DrawImageOptions, screen *ebiten.Image){
+	if (op == nil){
+		op = &ebiten.DrawImageOptions{}
+	}
+	op.GeoM.Scale(scaleFactor,scaleFactor)
+	op.GeoM.Translate(float64(givenX),float64(givenY))
+	screen.DrawImage(img, op)
+
+}
+
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
@@ -71,9 +80,6 @@ func (g *Game) Update() error {
 
 	})
 
-	for _,bullet := range plBullets{
-		bullet.Update()
-	}
 
 	keys := controlls.GetKeyPressed()
 	
@@ -96,7 +102,7 @@ func (g *Game) Update() error {
 		}
 
 		if (keyPressed == ebiten.KeySpace){
-			if (len(plBullets)<5){
+			if (len(plBullets)<1){
 				var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
 				plBullets = append(plBullets, *newBlt)
 			}else{
@@ -106,26 +112,27 @@ func (g *Game) Update() error {
 
 	}
 
+
+	//Update bullet movement 
+	for _, bullet := range plBullets{
+		bullet.Y -= speed
+	}
+
     return nil
 }
 
 
 func (g *Game) Draw(screen *ebiten.Image) {
-
-	op := &ebiten.DrawImageOptions{}
-
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
-	op.GeoM.Translate(Ship.x, shipLevelY)
-	screen.DrawImage(g.shipImg,op)
 
+	//Draw ship
+	DrawAsset(int(Ship.x),int(Ship.y),g.shipImg,nil,screen)
 
-	//For each bullet
+	//Draw each bullet
 
 	for _,bullet := range plBullets{
-		sc := &ebiten.DrawImageOptions{}
-		sc.GeoM.Translate(bullet.X,bullet.Y)
-		screen.DrawImage(g.blt,sc)
+		DrawAsset(int(bullet.X),int(bullet.Y),g.blt,nil,screen)
 	}
 	
 
