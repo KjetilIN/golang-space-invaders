@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"image/color"
+	_ "image/jpeg"
 	"log"
 	"sync"
-	_ "image/jpeg"
-	"github.com/KjetilIN/golang-space-invaders/controlls"
+
 	"github.com/KjetilIN/golang-space-invaders/bullet"
+	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const (
@@ -101,7 +103,7 @@ func (g *Game) Update() error {
 			}
 		}
 
-		if (keyPressed == ebiten.KeySpace){
+		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
 			if (len(plBullets)<1){
 				var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
 				plBullets = append(plBullets, *newBlt)
