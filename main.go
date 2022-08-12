@@ -27,6 +27,7 @@ const (
 
 
 var (
+	bl1 *bullet.PlayerBullet
 	Ship ship = *NewShip(0,shipLevelY)
 	plBullets []bullet.PlayerBullet = bullet.NewBulletList()
 
@@ -70,6 +71,18 @@ func DrawAsset(givenX int, givenY int, img *ebiten.Image, op *ebiten.DrawImageOp
 
 }
 
+
+func init(){
+
+	bl1 = bullet.NewPlayerBullet(-1,-1,10)
+	//bl2 := bullet.NewPlayerBullet(-1,-1,10)
+	//bl3 := bullet.NewPlayerBullet(-1,-1,10)
+	//bl4 := bullet.NewPlayerBullet(-1,-1,10)
+	//bl5 := bullet.NewPlayerBullet(-1,-1,10)
+
+
+}
+
 // Update proceeds the game state.
 // Update is called every tick (1/60 [s] by default).
 func (g *Game) Update() error {
@@ -104,20 +117,15 @@ func (g *Game) Update() error {
 		}
 
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
-			if (len(plBullets)<1){
-				var newBlt = bullet.NewPlayerBullet(Ship.x,shipLevelY-40,10)
-				plBullets = append(plBullets, *newBlt)
-			}else{
-				plBullets = bullet.NewBulletList()
-			}
+			bl1.X = Ship.x+3
+			bl1.Y = Ship.y-20
 		}
 
 	}
 
 
-	//Update bullet movement 
-	for _, bullet := range plBullets{
-		bullet.Y -= speed
+	if(bl1.Y > -40){
+		bl1.Y -= 10
 	}
 
     return nil
@@ -128,16 +136,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Write your game's rendering.
 	screen.Fill(color.RGBA{0,0,0,0})
 
-	//Draw ship
-	DrawAsset(int(Ship.x),int(Ship.y),g.shipImg,nil,screen)
-
-	//Draw each bullet
-
-	for _,bullet := range plBullets{
-		DrawAsset(int(bullet.X),int(bullet.Y),g.blt,nil,screen)
-	}
+	shipOp := &ebiten.DrawImageOptions{}
+	shipOp.GeoM.Translate(Ship.x,Ship.y)
+	screen.DrawImage(g.shipImg,shipOp)
 	
 
+	blOp := &ebiten.DrawImageOptions{}
+	blOp.GeoM.Translate(bl1.X,bl1.Y)
+	screen.DrawImage(g.blt,blOp)
 }
 
 //Size of screen
