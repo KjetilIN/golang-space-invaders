@@ -29,7 +29,6 @@ const (
 var (
 	bl1 *bullet.PlayerBullet
 	Ship ship = *NewShip(0,shipLevelY)
-	plBullets []bullet.PlayerBullet = bullet.NewBulletList()
 
 )
 
@@ -59,18 +58,6 @@ func loadImage (path string) *ebiten.Image{
 	}
 	return img
 }
-
-//Function for drawing asset 
-func DrawAsset(givenX int, givenY int, img *ebiten.Image, op *ebiten.DrawImageOptions, screen *ebiten.Image){
-	if (op == nil){
-		op = &ebiten.DrawImageOptions{}
-	}
-	op.GeoM.Scale(scaleFactor,scaleFactor)
-	op.GeoM.Translate(float64(givenX),float64(givenY))
-	screen.DrawImage(img, op)
-
-}
-
 
 func init(){
 
@@ -140,10 +127,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	shipOp.GeoM.Translate(Ship.x,Ship.y)
 	screen.DrawImage(g.shipImg,shipOp)
 	
-
-	blOp := &ebiten.DrawImageOptions{}
-	blOp.GeoM.Translate(bl1.X,bl1.Y)
-	screen.DrawImage(g.blt,blOp)
+	//Draw bullets
+	bullet.DrawBullet(screen,bl1, g.blt)
 }
 
 //Size of screen

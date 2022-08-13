@@ -1,5 +1,10 @@
 package bullet
 
+
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
+
 type PlayerBullet struct {
 	X float64
 	Y float64
@@ -25,4 +30,13 @@ func NewPlayerBullet(x float64, y float64, speedy float64) *PlayerBullet{
 //Makes an empty list of bullets 
 func NewBulletList() []PlayerBullet{
 	return make([]PlayerBullet,0)
+}
+
+
+func DrawBullet(screen *ebiten.Image, bl *PlayerBullet, img *ebiten.Image) {
+
+	blOp := &ebiten.DrawImageOptions{}
+	blOp.GeoM.Translate(bl.X,bl.Y)
+	screen.DrawImage(img,blOp)
+
 }
