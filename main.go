@@ -27,6 +27,7 @@ const (
 
 
 var (
+	score uint16 
 
 	bl1 *bullet.PlayerBullet
 	bl2 *bullet.PlayerBullet
@@ -67,6 +68,7 @@ func loadImage (path string) *ebiten.Image{
 }
 
 func init(){
+	score = 0 
 
 	bl1 = bullet.NewPlayerBullet(-1,-1,10)
 	bl2 = bullet.NewPlayerBullet(-1,-1,10)
@@ -112,6 +114,9 @@ func (g *Game) Update() error {
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
 			//Set a new bullet at the front og the ship 
 			bullet.ResetHighBullet(bl1,bl2,bl3,bl4,bl5,Ship.x, shipLevelY)
+
+			//Add 1 for the score temp
+			score += 1
 		}
 
 	}
