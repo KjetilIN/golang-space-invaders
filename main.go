@@ -110,34 +110,14 @@ func (g *Game) Update() error {
 		}
 
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
-
-			if (bl1.Y <= bl2.Y){
-				bl1.X = Ship.x
-				bl1.Y = shipLevelY -40
-			}else if (bl2.Y <= bl3.Y){
-				bl2.X = Ship.x
-				bl2.Y = shipLevelY - 40
-			}else if (bl3.Y <= bl4.Y){
-				bl3.X = Ship.x
-				bl3.Y = shipLevelY -40
-			}else if (bl4.Y <= bl5.Y){
-				bl4.X = Ship.x
-				bl4.Y = shipLevelY -40
-			}else{
-				bl5.X = Ship.x
-				bl5.Y = shipLevelY -40
-			}
-
+			//Set a new bullet at the front og the ship 
+			bullet.ResetHighBullet(bl1,bl2,bl3,bl4,bl5,Ship.x, shipLevelY)
 		}
 
 	}
 
 	//Update all bullets 
-	bl1.Update()
-	bl2.Update()
-	bl3.Update()
-	bl4.Update()
-	bl5.Update()
+	bullet.UpdateEachBulletGiven(bl1,bl2,bl3,bl4,bl5)
 
     return nil
 }
