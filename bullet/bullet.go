@@ -13,7 +13,10 @@ type PlayerBullet struct {
 
 //Update the bullet postition - Moves the bullet up
 func (b *PlayerBullet) Update() {
-	b.Y -= b.SpeedY
+	if(b.Y > -40){
+		b.Y -= b.SpeedY
+	}
+	
 }
 
 //Create a new player bullet

@@ -27,7 +27,14 @@ const (
 
 
 var (
+
 	bl1 *bullet.PlayerBullet
+	bl2 *bullet.PlayerBullet
+	bl3 *bullet.PlayerBullet
+	bl4 *bullet.PlayerBullet
+	bl5 *bullet.PlayerBullet
+
+	
 	Ship ship = *NewShip(0,shipLevelY)
 
 )
@@ -62,10 +69,10 @@ func loadImage (path string) *ebiten.Image{
 func init(){
 
 	bl1 = bullet.NewPlayerBullet(-1,-1,10)
-	//bl2 := bullet.NewPlayerBullet(-1,-1,10)
-	//bl3 := bullet.NewPlayerBullet(-1,-1,10)
-	//bl4 := bullet.NewPlayerBullet(-1,-1,10)
-	//bl5 := bullet.NewPlayerBullet(-1,-1,10)
+	bl2 = bullet.NewPlayerBullet(-1,-1,10)
+	bl3 = bullet.NewPlayerBullet(-1,-1,10)
+	bl4 = bullet.NewPlayerBullet(-1,-1,10)
+	bl5 = bullet.NewPlayerBullet(-1,-1,10)
 
 
 }
@@ -81,7 +88,6 @@ func (g *Game) Update() error {
 		g.blt = loadImage("assets/figures/bullet.jpg")
 
 	})
-
 
 	keys := controlls.GetKeyPressed()
 	
@@ -104,16 +110,34 @@ func (g *Game) Update() error {
 		}
 
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
-			bl1.X = Ship.x+3
-			bl1.Y = Ship.y-20
+
+			if (bl1.Y <= bl2.Y){
+				bl1.X = Ship.x
+				bl1.Y = shipLevelY -40
+			}else if (bl2.Y <= bl3.Y){
+				bl2.X = Ship.x
+				bl2.Y = shipLevelY - 40
+			}else if (bl3.Y <= bl4.Y){
+				bl3.X = Ship.x
+				bl3.Y = shipLevelY -40
+			}else if (bl4.Y <= bl5.Y){
+				bl4.X = Ship.x
+				bl4.Y = shipLevelY -40
+			}else{
+				bl5.X = Ship.x
+				bl5.Y = shipLevelY -40
+			}
+
 		}
 
 	}
 
-
-	if(bl1.Y > -40){
-		bl1.Y -= 10
-	}
+	//Update all bullets 
+	bl1.Update()
+	bl2.Update()
+	bl3.Update()
+	bl4.Update()
+	bl5.Update()
 
     return nil
 }
@@ -129,6 +153,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	
 	//Draw bullets
 	bullet.DrawBullet(screen,bl1, g.blt)
+	bullet.DrawBullet(screen,bl2, g.blt)
+	bullet.DrawBullet(screen,bl3, g.blt)
+	bullet.DrawBullet(screen,bl4, g.blt)
+	bullet.DrawBullet(screen,bl5, g.blt)
 }
 
 //Size of screen
