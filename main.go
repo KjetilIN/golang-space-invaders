@@ -142,6 +142,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	bullet.DrawBullet(screen,bl3, g.blt)
 	bullet.DrawBullet(screen,bl4, g.blt)
 	bullet.DrawBullet(screen,bl5, g.blt)
+
+	
 }
 
 //Size of screen
