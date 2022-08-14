@@ -7,6 +7,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/KjetilIN/golang-space-invaders/utils"
 	"github.com/KjetilIN/golang-space-invaders/bullet"
 	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -27,6 +28,7 @@ const (
 
 
 var (
+	score uint16 
 
 	bl1 *bullet.PlayerBullet
 	bl2 *bullet.PlayerBullet
@@ -67,6 +69,7 @@ func loadImage (path string) *ebiten.Image{
 }
 
 func init(){
+	score = 0 
 
 	bl1 = bullet.NewPlayerBullet(-1,-1,10)
 	bl2 = bullet.NewPlayerBullet(-1,-1,10)
@@ -112,6 +115,10 @@ func (g *Game) Update() error {
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
 			//Set a new bullet at the front og the ship 
 			bullet.ResetHighBullet(bl1,bl2,bl3,bl4,bl5,Ship.x, shipLevelY)
+
+			//Add 1 for the score temp
+			score += 1
+			fmt.Println("SCORE: ",score)
 		}
 
 	}
@@ -137,6 +144,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	bullet.DrawBullet(screen,bl3, g.blt)
 	bullet.DrawBullet(screen,bl4, g.blt)
 	bullet.DrawBullet(screen,bl5, g.blt)
+
+	utils.DrawScore(screen,int(score),width,height)
+
+	
 }
 
 //Size of screen
