@@ -7,6 +7,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/KjetilIN/golang-space-invaders/utils"
 	"github.com/KjetilIN/golang-space-invaders/bullet"
 	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -117,6 +118,7 @@ func (g *Game) Update() error {
 
 			//Add 1 for the score temp
 			score += 1
+			fmt.Println("SCORE: ",score)
 		}
 
 	}
@@ -142,6 +144,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	bullet.DrawBullet(screen,bl3, g.blt)
 	bullet.DrawBullet(screen,bl4, g.blt)
 	bullet.DrawBullet(screen,bl5, g.blt)
+
+	utils.DrawScore(screen,int(score),width,height)
 
 	
 }
