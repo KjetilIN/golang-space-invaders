@@ -16,6 +16,20 @@ Then run using all files;
 ``` go run . ```
 
 
+## Go Packages Used
+
+- Ebiten:
+    - `"github.com/hajimehoshi/ebiten/v2"`
+	- `"github.com/hajimehoshi/ebiten/v2/ebitenutil"`
+
+- Fmt - Printing to console
+- For converting strings: `"strconv"`
+- Reading images:
+    - `"image/color"`
+	- `_ "image/jpeg"`
+
+
+
 ## Sprite Sheet
 
 The used figures:
