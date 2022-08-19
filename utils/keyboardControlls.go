@@ -1,4 +1,4 @@
-package controlls
+package utils
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"

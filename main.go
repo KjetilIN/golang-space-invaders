@@ -9,7 +9,6 @@ import (
 
 	"github.com/KjetilIN/golang-space-invaders/utils"
 	"github.com/KjetilIN/golang-space-invaders/bullet"
-	"github.com/KjetilIN/golang-space-invaders/controlls"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -92,7 +91,7 @@ func (g *Game) Update() error {
 
 	})
 
-	keys := controlls.GetKeyPressed()
+	keys := utils.GetKeyPressed()
 	
 	
 	if(len(keys) != 0){
@@ -118,7 +117,6 @@ func (g *Game) Update() error {
 
 			//Add 1 for the score temp
 			score += 1
-			fmt.Println("SCORE: ",score)
 		}
 
 	}
