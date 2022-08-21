@@ -2,6 +2,13 @@
 
 Created using Golang and Ebitengine
 
+![FirstDraft](https://user-images.githubusercontent.com/66110094/185804774-a560cfb9-a3ff-4e59-adbe-38bca1c127cc.gif)
+
+
+
+
+( **Current State As Of 21.08.22**)
+
 
 ## Run project
 
