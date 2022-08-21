@@ -48,9 +48,12 @@ var (
 //Implement ebiten game engine
 type Game struct{
 
+	//Images
 	shipImg *ebiten.Image
 	blt *ebiten.Image
+	downEnemyImg *ebiten.Image
 
+	//Sync tool
 	once sync.Once
 
 }
@@ -69,7 +72,6 @@ func loadImage (path string) *ebiten.Image{
 
 func init(){
 	score = 0 
-
 	bl1 = bullet.NewPlayerBullet(-1,-1,10)
 	bl2 = bullet.NewPlayerBullet(-1,-1,10)
 	bl3 = bullet.NewPlayerBullet(-1,-1,10)
@@ -88,6 +90,7 @@ func (g *Game) Update() error {
 	g.once.Do(func() {
 		g.shipImg = loadImage("assets/figures/ship.jpg")
 		g.blt = loadImage("assets/figures/bullet.jpg")
+		g.downEnemyImg = loadImage("assets/figures/pink_left.jpg")
 
 	})
 
