@@ -9,6 +9,8 @@ type PlayerBullet struct {
 	X float64
 	Y float64
 	SpeedY float64
+	img *ebiten.Image
+	op ebiten.DrawImageOptions
 }
 
 //Update the bullet postition - Moves the bullet up, if the bullet is on screen

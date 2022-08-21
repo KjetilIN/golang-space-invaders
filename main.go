@@ -126,7 +126,7 @@ func (g *Game) Update() error {
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
 			//Set a new bullet at the front og the ship 
 			bullet.ResetHighBullet(bl1,bl2,bl3,bl4,bl5,Ship.x, shipLevelY)
-		
+			score +=1 
 		}
 
 	}
