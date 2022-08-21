@@ -6,7 +6,8 @@ import (
 	_ "image/jpeg"
 	"log"
 	"sync"
-
+	
+	"github.com/KjetilIN/golang-space-invaders/enemy"
 	"github.com/KjetilIN/golang-space-invaders/utils"
 	"github.com/KjetilIN/golang-space-invaders/bullet"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -34,6 +35,10 @@ var (
 	bl3 *bullet.PlayerBullet
 	bl4 *bullet.PlayerBullet
 	bl5 *bullet.PlayerBullet
+
+	downEnemy1 *enemy.DownEnemy
+	downEnemy2 *enemy.DownEnemy
+	downEnemy3 *enemy.DownEnemy
 
 	
 	Ship ship = *NewShip(0,shipLevelY)
@@ -72,12 +77,16 @@ func loadImage (path string) *ebiten.Image{
 
 func init(){
 	score = 0 
+
 	bl1 = bullet.NewPlayerBullet(-1,-1,10)
 	bl2 = bullet.NewPlayerBullet(-1,-1,10)
 	bl3 = bullet.NewPlayerBullet(-1,-1,10)
 	bl4 = bullet.NewPlayerBullet(-1,-1,10)
 	bl5 = bullet.NewPlayerBullet(-1,-1,10)
 
+	downEnemy1 = enemy.NewDownEnemy(20+36,-1,1)
+	downEnemy2 = enemy.NewDownEnemy(50+36,-1,1)
+	downEnemy3 = enemy.NewDownEnemy(70+36,-1,1)
 
 }
 
@@ -127,6 +136,9 @@ func (g *Game) Update() error {
 	//Update all bullets 
 	bullet.UpdateEachBulletGiven(bl1,bl2,bl3,bl4,bl5)
 
+	//Update all enemies 
+	enemy.UpdateAll(downEnemy1,downEnemy2,downEnemy3,bl1,bl2,bl3,bl4,bl5, height)
+
     return nil
 }
 
@@ -146,6 +158,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	bullet.DrawBullet(screen,bl4, g.blt)
 	bullet.DrawBullet(screen,bl5, g.blt)
 
+	//Draw each enemy 
+	enemy.Draw(screen,downEnemy1,g.downEnemyImg)
+	enemy.Draw(screen,downEnemy2,g.downEnemyImg)
+	enemy.Draw(screen,downEnemy3,g.downEnemyImg)
+
+	//Draw ScoreBoard 
 	utils.DrawScore(screen,int(score),width,height)
 
 	
