@@ -29,61 +29,54 @@ func Draw(screen *ebiten.Image, enemy *DownEnemy, img *ebiten.Image) {
 	screen.DrawImage(img,enemyOp)
 }
 
-//Check if any bullet hits the cuttent enemy 
-func (d *DownEnemy) isHit(bl1 bullet.PlayerBullet, bl2 bullet.PlayerBullet, bl3 bullet.PlayerBullet, bl4 bullet.PlayerBullet, bl5 bullet.PlayerBullet)bool{
-	isAnyBulletOnSameX := isBulletOnX(&bl1,d.x) || isBulletOnX(&bl2,d.x) || isBulletOnX(&bl3,d.x) || isBulletOnX(&bl4,d.x) || isBulletOnX(&bl5,d.x)
-	isAnyBulletOnSameY := isBulletOnY(&bl1,d.y) || isBulletOnY(&bl2,d.y) || isBulletOnY(&bl3,d.y) || isBulletOnY(&bl4,d.y) || isBulletOnY(&bl5,d.y)
-
-	if(isAnyBulletOnSameX){
-		println("IS ON SAME X")
-	}
-
-	if(isAnyBulletOnSameY){
-		println("IS ON SAME Y")
-	}
+func (enemy *DownEnemy) reset(){
+	enemy.x = 0
+	enemy.y = -1 -bulletHeight
+}
 
 
+//Check if the enemy is hit by the given bullet
+func (enemy *DownEnemy)checkAndUpdateBulletHit(bl *bullet.PlayerBullet, height int) bool {
+	hitOnXLevel := bl.X >= float64(enemy.x) && bl.X + bulletHeight <= float64(enemy.x) 
+	hitOnYLevel := bl.Y >= float64(enemy.y) && bl.Y + bulletHeight <= float64(enemy.y) 
 
-	if(isAnyBulletOnSameX && isAnyBulletOnSameY){
+	hasBulletInHitbox := hitOnXLevel && hitOnYLevel
+
+	if(hasBulletInHitbox){
+		//Reset the bullet and enemy 
+		bl.Reset() 
+		enemy.reset()
 		return true
+	}else{
+		//Move enemy down as long as it is within the screen
+		if(enemy.y > height){
+			enemy.y += enemy.speed
+		}else{
+			//Reset the enemy or end the game
+			enemy.reset()
+		}
+		
 	}
 	return false
 }
 
-//Check if the bullet is within the same x box 
-func isBulletOnX(bl *bullet.PlayerBullet, x int)bool{
-	return bl.X <= float64(x) && bl.X + bulletWidht >= float64(x) 
-}
-
-//Check if the bullet is within the same y box 
-func isBulletOnY(bl *bullet.PlayerBullet, Y int)bool{
-	return bl.Y <= float64(Y) && bl.Y + bulletHeight >= float64(Y) 
-}
-
-//Update all enemies
-func UpdateAll(enemy1 *DownEnemy, enemy2 *DownEnemy, enemy3 *DownEnemy, 
-	bl1 *bullet.PlayerBullet, bl2 *bullet.PlayerBullet,
+func (enemy *DownEnemy)checkAllBullets(bl1 *bullet.PlayerBullet, bl2 *bullet.PlayerBullet,
 	bl3 *bullet.PlayerBullet,bl4 *bullet.PlayerBullet,bl5 *bullet.PlayerBullet, screenHeight int){
 
-	enemy1.updateEnemy(bl1,bl2,bl3,bl4,bl5, screenHeight)
-	enemy1.updateEnemy(bl1,bl2,bl3,bl4,bl5, screenHeight)
-	enemy1.updateEnemy(bl1,bl2,bl3,bl4,bl5, screenHeight)
+	enemy.checkAndUpdateBulletHit(bl1,screenHeight)
+	enemy.checkAndUpdateBulletHit(bl2,screenHeight)
+	enemy.checkAndUpdateBulletHit(bl3,screenHeight)
+	enemy.checkAndUpdateBulletHit(bl4,screenHeight)
+	enemy.checkAndUpdateBulletHit(bl5,screenHeight)
+
 }
 
-//Update a single enemy 
-func (e *DownEnemy)updateEnemy(bl1 *bullet.PlayerBullet, bl2 *bullet.PlayerBullet,
-	bl3 *bullet.PlayerBullet,bl4 *bullet.PlayerBullet,bl5 *bullet.PlayerBullet , height int){
-
-	if(e.isHit(*bl1,*bl2,*bl3,*bl4,*bl5)){
-		//Reset the postition of the enemy
-		e.x = 30
-		e.y = -30
-	}else{
-		//Move enemy down
-		if(e.y < height){
-			e.y += e.speed
-		}
-		
-		println(e.y)
-	}
+//Update function
+func Update(enemy1 *DownEnemy, enemy2 *DownEnemy, enemy3 *DownEnemy, 
+	bl1 *bullet.PlayerBullet, bl2 *bullet.PlayerBullet,
+	bl3 *bullet.PlayerBullet,bl4 *bullet.PlayerBullet,bl5 *bullet.PlayerBullet, screenHeight int){
+	
+	enemy1.checkAllBullets(bl1,bl2,bl3,bl4,bl5,screenHeight)
+	enemy2.checkAllBullets(bl1,bl2,bl3,bl4,bl5,screenHeight)
+	enemy3.checkAllBullets(bl1,bl2,bl3,bl4,bl5,screenHeight)
 }

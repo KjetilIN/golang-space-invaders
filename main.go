@@ -23,7 +23,7 @@ const (
 	//SHIP
 	shipWidth = 45
 	shipLevelY = height*8/9 
-	speed = 9
+	speed = 6
 )
 
 
@@ -84,9 +84,9 @@ func init(){
 	bl4 = bullet.NewPlayerBullet(-1,-1,10)
 	bl5 = bullet.NewPlayerBullet(-1,-1,10)
 
-	downEnemy1 = enemy.NewDownEnemy(20+36,-1,1)
-	downEnemy2 = enemy.NewDownEnemy(50+36,-1,1)
-	downEnemy3 = enemy.NewDownEnemy(70+36,-1,1)
+	downEnemy1 = enemy.NewDownEnemy(20+40,-1,1)
+	downEnemy2 = enemy.NewDownEnemy(50+40,-1,1)
+	downEnemy3 = enemy.NewDownEnemy(70+40,-1,1)
 
 }
 
@@ -126,9 +126,7 @@ func (g *Game) Update() error {
 		if (inpututil.IsKeyJustPressed(ebiten.KeySpace)){
 			//Set a new bullet at the front og the ship 
 			bullet.ResetHighBullet(bl1,bl2,bl3,bl4,bl5,Ship.x, shipLevelY)
-
-			//Add 1 for the score temp
-			score += 1
+		
 		}
 
 	}
@@ -136,8 +134,9 @@ func (g *Game) Update() error {
 	//Update all bullets 
 	bullet.UpdateEachBulletGiven(bl1,bl2,bl3,bl4,bl5)
 
+
 	//Update all enemies 
-	enemy.UpdateAll(downEnemy1,downEnemy2,downEnemy3,bl1,bl2,bl3,bl4,bl5, height)
+	enemy.Update(downEnemy1,downEnemy2,downEnemy3,bl1,bl2,bl3,bl4,bl5,height)
 
     return nil
 }

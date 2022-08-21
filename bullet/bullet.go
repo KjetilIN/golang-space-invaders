@@ -19,6 +19,12 @@ func (b *PlayerBullet) Update() {
 	
 }
 
+//Reset bullet 
+func (b *PlayerBullet) Reset() {
+	b.X = -1
+	b.Y = -41
+}
+
 //Create a new player bullet
 func NewPlayerBullet(x float64, y float64, speedy float64) *PlayerBullet{
 	var playerBullet = PlayerBullet{
